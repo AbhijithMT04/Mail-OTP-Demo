@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send OTP</title>
+</head>
+<body>
+
+    <h2>Send OTP Through Gmail</h2>
+
+    <input type="email" id="email" placeholder="Enter your email">
+    <button onclick="sendOtp()">Send OTP</button>
+
+    <p id="message"></p>
+
+    <script>
+        async function sendOtp() {
+            const email = document.getElementById("email").value;
+            const message = document.getElementById("message");
+
+            if (!email) {
+                message.innerText = "Please enter email.";
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/otp/send?email=${encodeURIComponent(email)}`, {
+                    method: "POST"
+                });
+
+                const result = await response.text();
+
+                if (response.ok) {
+                    message.innerText = result;
+                } else {
+                    message.innerText = "Something went wrong.";
+                }
+
+            } catch (error) {
+                message.innerText = "Error while sending OTP.";
+                console.error(error);
+            }
+        }
+    </script>
+
+</body>
+</html>
